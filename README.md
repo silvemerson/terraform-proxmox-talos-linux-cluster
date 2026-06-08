@@ -346,6 +346,35 @@ This module uses **Talos native VIP** — a built-in ARP-based virtual IP manage
 - Recommended for clusters with 3+ controlplane nodes (requires an odd number for etcd quorum).
 - When `controlplane_vip` is set, the Kubernetes API endpoint and talosconfig endpoints all point to the VIP. When it is empty, the first controlplane IP is used directly.
 
+## Scaling
+
+### Adding nodes
+
+Add entries to `controlplane_nodes` or `worker_nodes` in your `terraform.tfvars` and run `tofu apply`. Terraform creates only the new VMs — existing nodes are not affected.
+
+### Removing nodes
+
+**Always drain and remove nodes from the cluster before destroying them.** Skipping this corrupts the etcd state of the remaining nodes.
+
+**Worker:**
+```bash
+kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
+kubectl delete node <node-name>
+```
+
+**Controlplane:**
+```bash
+# Remove from etcd first
+talosctl --nodes <node-ip> etcd leave
+
+# Then remove from Kubernetes
+kubectl delete node <node-name>
+```
+
+After the node is removed from the cluster, remove it from `terraform.tfvars` and run `tofu apply`.
+
+> **Warning:** Running `tofu destroy` directly without draining first will leave the remaining etcd members trying to reach the deleted nodes, requiring manual recovery.
+
 ## License
 
 MIT
