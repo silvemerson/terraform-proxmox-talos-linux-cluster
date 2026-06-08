@@ -64,6 +64,8 @@ resource "proxmox_virtual_environment_vm" "this" {
     file_format  = "raw"
   }
 
+  boot_order = ["scsi0", "ide0"]
+
   cdrom {
     file_id   = var.talos_iso_id
     interface = "ide0"
