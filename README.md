@@ -1,8 +1,8 @@
 # terraform-proxmox-talos-linux-cluster
 
-[![CI](https://github.com/emerson-silva/terraform-proxmox-talos-linux-cluster/actions/workflows/ci.yml/badge.svg)](https://github.com/emerson-silva/terraform-proxmox-talos-linux-cluster/actions/workflows/ci.yml)
-[![Terraform Registry](https://img.shields.io/badge/Terraform-Registry-7B42BC?logo=terraform)](https://registry.terraform.io/modules/emerson-silva/talos-linux-cluster/proxmox/latest)
-[![OpenTofu Registry](https://img.shields.io/badge/OpenTofu-Registry-FFDA18?logo=opentofu&logoColor=black)](https://search.opentofu.org/module/emerson-silva/talos-linux-cluster/proxmox/latest)
+[![CI](https://github.com/silvemerson/terraform-proxmox-talos-linux-cluster/actions/workflows/ci.yml/badge.svg)](https://github.com/silvemerson/terraform-proxmox-talos-linux-cluster/actions/workflows/ci.yml)
+[![Terraform Registry](https://img.shields.io/badge/Terraform-Registry-7B42BC?logo=terraform)](https://registry.terraform.io/modules/silvemerson/talos-linux-cluster/proxmox/latest)
+[![OpenTofu Registry](https://img.shields.io/badge/OpenTofu-Registry-FFDA18?logo=opentofu&logoColor=black)](https://search.opentofu.org/module/silvemerson/talos-linux-cluster/proxmox/latest)
 
 Terraform / OpenTofu module to provision a production-ready [Talos Linux](https://www.talos.dev/) Kubernetes cluster on Proxmox VE using the [bpg/proxmox](https://registry.terraform.io/providers/bpg/proxmox/latest) and [siderolabs/talos](https://registry.terraform.io/providers/siderolabs/talos/latest) providers.
 
@@ -56,7 +56,7 @@ Copy the resulting 64-character schematic ID — it goes into `talos_schematic_i
 
 ```hcl
 module "talos_cluster" {
-  source  = "emerson-silva/talos-linux-cluster/proxmox"
+  source  = "silvemerson/talos-linux-cluster/proxmox"
   version = "~> 1.0"
 
   target_node          = "pve"
@@ -90,7 +90,7 @@ output "kubeconfig" {
 ### Run from the example
 
 ```bash
-git clone https://github.com/emerson-silva/terraform-proxmox-talos-linux-cluster
+git clone https://github.com/silvemerson/terraform-proxmox-talos-linux-cluster
 cd terraform-proxmox-talos-linux-cluster/examples/cluster
 
 cp ../../tfvars/terraform.tfvars.example terraform.tfvars
