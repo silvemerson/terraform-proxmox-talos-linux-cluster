@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: "1.9.x"
+
+      - name: Check formatting
+        run: tofu fmt -check -recursive
+
+      - name: Init root module
+        run: tofu init -backend=false
+
+      - name: Validate root module
+        run: tofu validate
+
+      - name: Init example
+        working-directory: examples/cluster
+        run: tofu init -backend=false
+
+      - name: Validate example
+        working-directory: examples/cluster
+        run: tofu validate

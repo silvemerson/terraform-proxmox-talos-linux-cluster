@@ -1,0 +1,66 @@
+# ---------------------------------------------------------------------------
+# Proxmox provider
+# ---------------------------------------------------------------------------
+proxmox_endpoint         = "https://192.168.1.100:8006"
+proxmox_api_token_id     = "root@pam!terraform-token"
+proxmox_api_token_secret = "REPLACE-ME"
+proxmox_insecure         = true
+proxmox_ssh_username     = "root"
+proxmox_ssh_password     = "REPLACE-ME"
+
+# ---------------------------------------------------------------------------
+# Proxmox placement
+# ---------------------------------------------------------------------------
+target_node          = "pve"
+disk_storage         = "local-lvm"
+cloud_init_datastore = "local-lvm"
+snippets_datastore   = "local"
+iso_datastore        = "local"   # must have 'iso' content type
+
+# ---------------------------------------------------------------------------
+# Talos image — schematic gerado em https://factory.talos.dev
+# ---------------------------------------------------------------------------
+talos_version      = "1.9.5"
+talos_schematic_id = "376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4b"
+
+# ---------------------------------------------------------------------------
+# Network (compartilhado por todos os nodes)
+# ---------------------------------------------------------------------------
+network_bridge       = "vmbr0"
+network_vlan_id      = 0
+network_prefix       = 24
+network_gateway_ipv4 = "192.168.1.1"
+dns_servers          = ["8.8.8.8", "1.1.1.1"]
+
+# ---------------------------------------------------------------------------
+# Cluster
+# ---------------------------------------------------------------------------
+cluster_name     = "talos-lab"
+controlplane_vip = "192.168.1.200"   # deixe "" para usar o IP do primeiro CP
+
+# ---------------------------------------------------------------------------
+# Controlplane nodes
+# A chave do map é o hostname da VM; vm_id deve ser único no Proxmox.
+# ---------------------------------------------------------------------------
+controlplane_nodes = {
+  "talos-cp-1" = { vm_id = 201, ip = "192.168.1.201" }
+  "talos-cp-2" = { vm_id = 202, ip = "192.168.1.202" }
+  "talos-cp-3" = { vm_id = 203, ip = "192.168.1.203" }
+}
+
+controlplane_cores     = 2
+controlplane_memory_mb = 2048
+controlplane_disk_gb   = 20
+
+# ---------------------------------------------------------------------------
+# Worker nodes — remova o bloco inteiro para cluster sem workers
+# ---------------------------------------------------------------------------
+worker_nodes = {
+  "talos-worker-1" = { vm_id = 211, ip = "192.168.1.211" }
+  "talos-worker-2" = { vm_id = 212, ip = "192.168.1.212" }
+  "talos-worker-3" = { vm_id = 213, ip = "192.168.1.213" }
+}
+
+worker_cores     = 4
+worker_memory_mb = 4096
+worker_disk_gb   = 40
